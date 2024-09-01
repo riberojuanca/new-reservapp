@@ -3,5 +3,12 @@
 @tailwind utilities;
 
 body {
-  @apply dark:bg-black dark:text-white;
+  @apply bg-stone-500 text-black;
+}
+
+label {
+  @apply mt-2 px-1;
+}
+input {
+  @apply rounded-sm p-2;
 }
