@@ -3,12 +3,21 @@
 @tailwind utilities;
 
 body {
-  @apply bg-stone-500 text-black;
+  @apply bg-stone-500 text-white;
 }
 
 label {
-  @apply mt-2 px-1;
+  @apply px-1 text-stone-400 text-sm;
 }
 input {
-  @apply rounded-sm p-2;
+  @apply rounded-sm p-2 bg-stone-400 text-stone-700;
+}
+input:focus {
+  @apply outline-none border-none shadow-2xl;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px bg-stone-500 inset; /* Cambia el color de fondo a blanco o al que prefieras */
+  -webkit-text-fill-color: #44403c; /* Cambia el color del texto */
+  transition: background-color 5000s ease-in-out 0s; /* Asegura que el cambio de color sea instantáneo */
 }
