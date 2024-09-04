@@ -1,11 +1,24 @@
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import GitHub from "next-auth/providers/github";
 import prisma from "./lib/db";
 import bcrypt from "bcryptjs";
 
-// Notice this is only an object, not a full Auth.js instance
 export default {
   providers: [
+    GitHub({
+      clientId: process.env.AUTH_GITHUB_ID,
+      clientSecret: process.env.AUTH_GITHUB_SECRET,
+      profile(profile) {
+        return {
+          id: profile.id.toString(),
+          name: profile.name || null,
+          email: profile.email || null,
+          image: profile.avatar_url,
+          username: profile.login,
+        };
+      },
+    }),
     Credentials({
       credentials: {
         username: {},
