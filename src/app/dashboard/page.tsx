@@ -5,15 +5,16 @@ import Image from "next/image";
 
 async function dashboard() {
   const session = await auth();
+  console.log(session?.user);
   if (!session) {
     return <div>No estas logueado</div>;
   }
-  const user = await prisma.user.findUnique({
-    where: {
-      email: session.user.email as string,
-    },
-  });
-  if (!user) return <div>No estas logueado</div>;
+  // const user = await prisma.user.findUnique({
+  //   where: {
+  //     email: session.user.email,
+  //   },
+  // });
+  // if (!user) return <div>No estas logueado</div>;
 
   return (
     <article className="p-4">
@@ -25,14 +26,14 @@ async function dashboard() {
             alt=""
           ></img>
           <div>
-            <h1>Hola, {user.name} 👋🏽</h1>
+            <h1>Hola, {session.user.name} 👋🏽</h1>
             <LogoutButton />
           </div>
         </div>
       ) : (
         <div className="flex items-center gap-4">
           <div>
-            <h1>Hola, {user.name} 👋🏽</h1>
+            <h1>Hola, {session.user.name} 👋🏽</h1>
             <LogoutButton />
           </div>
         </div>
