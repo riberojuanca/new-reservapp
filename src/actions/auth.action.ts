@@ -1,4 +1,5 @@
 "use server";
+
 import prisma from "@/lib/db";
 import { Inputs } from "@/types/InputsTypes";
 import { AuthError } from "next-auth";
@@ -30,6 +31,7 @@ export const loginAction = async (data: Inputs) => {
 };
 
 //-----------------------------------------------------------------------------------------------
+
 export const registerAction = async (data: Inputs): Promise<AuthResponse> => {
   if (!data) {
     return {
@@ -75,6 +77,7 @@ export const registerAction = async (data: Inputs): Promise<AuthResponse> => {
         username: data.username,
         email: data.email,
         password: hashPassword,
+        image: data.image,
       },
     });
 
