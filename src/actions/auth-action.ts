@@ -3,7 +3,7 @@
 import prisma from "@/lib/db";
 import { Inputs } from "@/types/InputsTypes";
 import { AuthError } from "next-auth";
-import bcrypt from "bcryptjs";
+import { hash, compare } from "bcryptjs";
 import { User } from "@/types/UserTypes";
 import { signIn } from "@/auth";
 
@@ -67,7 +67,7 @@ export const registerAction = async (data: Inputs): Promise<AuthResponse> => {
     }
 
     //Hasheamos el password
-    const hashPassword = await bcrypt.hash(data.password, 10);
+    const hashPassword = await hash(data.password, 10);
     console.log(hashPassword);
 
     //Creamos el nuevo usuario usando los datos

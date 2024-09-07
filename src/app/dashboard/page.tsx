@@ -1,6 +1,5 @@
 import { auth } from "@/auth";
 import LogoutButton from "@/components/LogOutButton";
-import prisma from "@/lib/db";
 import Image from "next/image";
 
 async function dashboard() {
@@ -9,35 +8,23 @@ async function dashboard() {
   if (!session) {
     return <div>No estas logueado</div>;
   }
-  // const user = await prisma.user.findUnique({
-  //   where: {
-  //     email: session.user.email,
-  //   },
-  // });
-  // if (!user) return <div>No estas logueado</div>;
-
   return (
-    <article className="p-4">
-      {session.user.image !== null ? (
-        <div className="flex items-center gap-4">
-          <img
-            className="w-20 h-20 rounded-md"
-            src={`${session.user.image}`}
-            alt=""
-          ></img>
-          <div>
-            <h1>Hola, {session.user.name} 👋🏽</h1>
-            <LogoutButton />
-          </div>
+    <article className="p-4 ">
+      <div className="flex items-center gap-1 ">
+        <div className="w-fit p-1">
+          <LogoutButton />
         </div>
-      ) : (
-        <div className="flex items-center gap-4">
-          <div>
-            <h1>Hola, {session.user.name} 👋🏽</h1>
-            <LogoutButton />
-          </div>
+        <Image
+          className="w-20 h-20 object-cover rounded-md"
+          width={400}
+          height={400}
+          src={session.user.image || "/default-image-user.png"}
+          alt=""
+        ></Image>
+        <div>
+          <h1 className="px-1">Hola, {session.user.name} 👋🏽</h1>
         </div>
-      )}
+      </div>
     </article>
   );
 }

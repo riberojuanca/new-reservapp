@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import prisma from "./lib/db";
-import bcrypt from "bcryptjs";
+import { hash, compare } from "bcryptjs";
 
 export default {
   providers: [
@@ -98,7 +98,7 @@ export default {
         });
         if (!userFound) throw new Error("User not found");
 
-        const matchPassword = await bcrypt.compare(
+        const matchPassword = await compare(
           credentials.password as string,
           userFound.password as string
         );

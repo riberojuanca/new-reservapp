@@ -1,10 +1,10 @@
-import RegisterForm from "@/components/registerForm";
+import FormRegister from "@/components/registerForm";
 
 function registerPage() {
   return (
     <section>
       <div>registerPage</div>
-      <RegisterForm />
+      <FormRegister />
     </section>
   );
 }
