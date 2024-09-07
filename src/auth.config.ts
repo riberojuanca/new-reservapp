@@ -11,14 +11,17 @@ export default {
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET,
       profile: async (profile) => {
+        // Creamos una constante para el email
         const email = profile.email;
+        // Si el email no existe, devolvemos un error
         if (!email) {
           throw new Error("Email not provided by Google");
         }
+        // Buscamos al usuario
         let user = await prisma.user.findUnique({
           where: { email },
         });
-
+        // Si el usuario no existe, lo creamos
         if (!user) {
           user = await prisma.user.create({
             data: {
@@ -31,6 +34,7 @@ export default {
             },
           });
         }
+        // Devolvemos los datos del usuario
         return {
           id: user.id,
           name: user.name,
@@ -76,6 +80,7 @@ export default {
         };
       },
     }),
+
     Credentials({
       credentials: {
         username: {},
