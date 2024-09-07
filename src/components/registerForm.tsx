@@ -1,32 +1,54 @@
 "use client";
 
-import { registerAction, AuthResponse } from "@/actions/auth.action";
+import { registerAction } from "@/actions/auth-action";
+import { AuthResponse } from "@/actions/auth-action";
 import { Inputs } from "@/types/InputsTypes";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const FormRegister = () => {
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState<boolean>(false); // Estado de carga
+  const [file, setFile] = useState<File | null>(null);
   const router = useRouter();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<Inputs>();
 
   async function onSubmit(data: Inputs) {
     setError(null);
-    startTransition(async () => {
+    setLoading(true); // Inicia el estado de carga
+
+    try {
+      if (file) {
+        const formData = new FormData();
+        formData.append("image", file);
+        const response = await fetch("/api/uploads", {
+          method: "POST",
+          body: formData,
+        });
+        const result = await response.json();
+        console.log(result.filePath);
+        setValue("image", result.filePath);
+        data.image = result.filePath;
+      }
+
       const response: AuthResponse = await registerAction(data);
       if (!response.success) {
         setError(response.error || "An unknown error occurred");
       } else {
         router.push("/login");
       }
-    });
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false); // Finaliza el estado de carga
+    }
   }
 
   return (
@@ -38,6 +60,27 @@ const FormRegister = () => {
         <h1 className="text-xl font-bold uppercase p-1">
           <span className="text-3xl grayscale">🔐</span> Register
         </h1>
+        <label htmlFor="image">Image</label>
+        <input
+          type="file"
+          accept="image/png, image/jpeg"
+          {...register("image", {
+            required: { value: true, message: "Image is required" },
+          })}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setFile(file);
+            } else {
+              setFile(null);
+            }
+          }}
+        />
+        {errors.image && (
+          <span className="w-full flex justify-end text-xs text-orange-500">
+            {errors.image.message}
+          </span>
+        )}
         {/* Inputs y manejo de errores */}
         <label htmlFor="name">Name</label>
         <input
@@ -63,11 +106,11 @@ const FormRegister = () => {
             {errors.username.message}
           </span>
         )}
-
         {/* Email */}
         <label htmlFor="email">Email</label>
         <input
           type="email"
+          autoComplete="username"
           {...register("email", {
             required: { value: true, message: "Email is required" },
           })}
@@ -77,11 +120,11 @@ const FormRegister = () => {
             {errors.email.message}
           </span>
         )}
-
         {/* Password */}
         <label htmlFor="password">Password</label>
         <input
           type="password"
+          autoComplete="new-password"
           {...register("password", {
             required: {
               value: true,
@@ -94,11 +137,11 @@ const FormRegister = () => {
             {errors.password.message}
           </span>
         )}
-
         {/* Confirm Password */}
         <label htmlFor="confirmPassword">Confirm Password</label>
         <input
           type="password"
+          autoComplete="new-password"
           {...register("confirmPassword", {
             required: {
               value: true,
@@ -113,9 +156,8 @@ const FormRegister = () => {
         )}
         {/* Submit button */}
         <button className="bg-orange-600 rounded-sm mt-3 p-3 uppercase font-bold text-stone-600 shadow-sm hover:shadow-md">
-          {isPending ? "Registering..." : "Register"}
+          {loading ? "Registering..." : "Register"}
         </button>
-
         {/* Error message */}
         {error && <p className="text-red-500">{error}</p>}
       </form>
