@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthResponse, loginAction } from "@/actions/auth.action";
+import { loginAction } from "@/actions/auth-action";
 import { Inputs } from "@/types/InputsTypes";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
