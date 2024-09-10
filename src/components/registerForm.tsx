@@ -52,7 +52,7 @@ const FormRegister = () => {
   }
 
   return (
-    <main className="h-screen flex justify-center items-center min-h-fit mx-auto">
+    <div className="h-screen flex justify-center items-center min-h-fit mx-auto">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col justify-center gap-1 min-w-80 w-1/6"
@@ -161,7 +161,7 @@ const FormRegister = () => {
         {/* Error message */}
         {error && <p className="text-red-500">{error}</p>}
       </form>
-    </main>
+    </div>
   );
 };
 

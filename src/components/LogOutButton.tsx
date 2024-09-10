@@ -10,8 +10,11 @@ const LogoutButton = () => {
   };
 
   return (
-    <button className="uppercase" onClick={handleClick}>
-      <small className="bg-stone-800 flex items-center justify-center text-stone-400  rounded-sm font-bold p-2">
+    <button
+      className="bg-transparent backdrop-blur-md  uppercase"
+      onClick={handleClick}
+    >
+      <small className="flex items-center justify-center text-stone-400 hover:text-white  rounded-sm font-bold py-2">
         Logout
       </small>
     </button>
