@@ -1,3 +1,5 @@
+"use client";
+
 import FormRegister from "@/components/registerForm";
 
 function registerPage() {

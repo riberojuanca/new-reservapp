@@ -1,9 +1,9 @@
-import type { NextAuthConfig } from "next-auth";
+import { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import prisma from "./lib/db";
-import { hash, compare } from "bcryptjs";
+import { compare } from "bcryptjs";
 
 export default {
   providers: [

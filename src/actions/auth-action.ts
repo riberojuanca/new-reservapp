@@ -3,7 +3,7 @@
 import prisma from "@/lib/db";
 import { Inputs } from "@/types/InputsTypes";
 import { AuthError } from "next-auth";
-import { hash, compare } from "bcryptjs";
+import { hash } from "bcryptjs";
 import { User } from "@/types/UserTypes";
 import { signIn } from "@/auth";
 
