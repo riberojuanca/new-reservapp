@@ -3,6 +3,7 @@ import { auth, signIn } from "@/auth";
 import LogoutButton from "@/components/LogOutButton";
 import Image from "next/image";
 import Link from "next/link";
+import LoginFormServer from "@/components/LoginFormServer";
 
 async function loginPage() {
   const session = await auth();
@@ -12,26 +13,7 @@ async function loginPage() {
       <article>
         <div>loginPage</div>
         <LoginForm />
-        <form
-          action={async () => {
-            "use server";
-            await signIn("github", {
-              redirectTo: "/dashboard",
-            });
-          }}
-        >
-          <button type="submit">Iniciar con Github</button>
-        </form>
-        <form
-          action={async () => {
-            "use server";
-            await signIn("google", {
-              redirectTo: "/dashboard",
-            });
-          }}
-        >
-          <button type="submit">Iniciar con Google</button>
-        </form>
+        <LoginFormServer />
       </article>
     );
   }
