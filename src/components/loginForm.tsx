@@ -3,12 +3,12 @@
 import { loginAction } from "@/actions/auth-action";
 import { Inputs } from "@/types/InputsTypes";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 const LoginForm = () => {
   const [error, setError] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [loading, setLoading] = useState<boolean>(false); // Estado de carga
   const router = useRouter();
 
   const {
@@ -19,14 +19,20 @@ const LoginForm = () => {
 
   async function onSubmit(data: Inputs) {
     setError(null);
-    startTransition(async () => {
+    setLoading(true); // Inicia el estado de carga
+
+    try {
       const response = await loginAction(data);
       if (!response.success) {
         setError(response.error || "An unknown error occurred");
       } else {
         router.push("/dashboard");
       }
-    });
+    } catch (error) {
+      setError("An unknown error occurred");
+    } finally {
+      setLoading(false); // Termina el estado de carga
+    }
   }
 
   return (
@@ -41,6 +47,7 @@ const LoginForm = () => {
         <label htmlFor="username">Username</label>
         <input
           type="text"
+          autoComplete="username"
           {...register("username", {
             required: { value: true, message: "Username is required" },
           })}
@@ -54,6 +61,7 @@ const LoginForm = () => {
         <label htmlFor="password">Password</label>
         <input
           type="password"
+          autoComplete="new-password"
           {...register("password", {
             required: {
               value: true,
@@ -69,7 +77,7 @@ const LoginForm = () => {
 
         {/* Submit button */}
         <button className="bg-orange-600 rounded-sm mt-3 p-3 uppercase font-bold text-stone-600 shadow-sm hover:shadow-md">
-          {isPending ? "Logging in" : "Login"}
+          {loading ? "Ingresando..." : "Ingresar"}
         </button>
 
         {/* Error message */}
