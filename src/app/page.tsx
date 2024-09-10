@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -11,14 +10,6 @@ export default function Home() {
             <h1 className="text-2xl font-bold uppercase">Reservapp</h1>
             <p className="text-xl">Welcome to the jungle!</p>
           </div>
-        </div>
-        <div className="w-full flex items-center justify-center gap-4">
-          <Link href={"/login"}>
-            <button>Login</button>
-          </Link>
-          <Link href={"/register"}>
-            <button>Register</button>
-          </Link>
         </div>
       </article>
     </main>
