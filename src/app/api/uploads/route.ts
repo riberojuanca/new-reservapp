@@ -25,7 +25,10 @@ export async function POST(request: Request) {
     await writeFile(filePath, buffer);
 
     // Genera la URL pública basada en la estructura de la carpeta 'public'
-    const publicUrl = `http://localhost:3000/${fileName}`;
+    const publicUrl = `http://localhost:3000/${fileName.replace(
+      /[^\w.-]/g,
+      "_"
+    )}`;
 
     return NextResponse.json({ filePath: publicUrl }, { status: 200 });
   } catch (error) {
